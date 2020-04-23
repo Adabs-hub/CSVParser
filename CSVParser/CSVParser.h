@@ -10,7 +10,7 @@
 
 class CSVParser {
 public:
-	auto ReadFile(std::string path, char delimiter = ',') {
+	inline auto ReadFile(std::string path, char delimiter = ',') const {
 		std::vector<std::vector<std::string>> result;
 		std::ifstream fs(path);
 		int columns = 0;
@@ -43,15 +43,14 @@ public:
 		fs.close();
 	}
 
-	void SetColumnsWidth(int width = 10) {
+	inline void SetColumnsWidth(size_t width = 10) {
 		if (width > 10)
 			this->printWidth_ = width;
 	}
 
 private:
-	std::vector<std::string> read_csv_row(std::ifstream& fs, char delimiter) {
-		//		std::stringstream ss;
-		std::vector<std::string> row; //RV
+	inline std::vector<std::string> read_csv_row(std::ifstream& fs, char delimiter) const {
+		std::vector<std::string> row; //RVO
 		std::string data;
 		while (fs.good()) {
 			char c = fs.get();
@@ -68,11 +67,11 @@ private:
 			else {
 				data.append(1, c);
 			}
-
 		}
+		return row;
 	}
-	int printWidth_ = 10;
+
+	size_t printWidth_ = 10;
 };
 
 #endif // !CSV_PARSER_H
-
